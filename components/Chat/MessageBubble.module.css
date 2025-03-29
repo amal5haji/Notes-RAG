@@ -1,0 +1,63 @@
+.messageBubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  word-wrap: break-word;
+  position: relative;
+}
+
+.user {
+  background-color: var(--primary);
+  color: white;
+  border-top-right-radius: 0.25rem;
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.assistant {
+  background-color: #f1f5f9;
+  color: var(--text);
+  border-top-left-radius: 0.25rem;
+  margin-right: auto;
+  margin-left: 1rem;
+}
+
+.messageTime {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  margin-top: 0.25rem;
+  text-align: right;
+}
+
+.typingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+}
+
+.typingDot {
+  width: 8px;
+  height: 8px;
+  background: var(--text-light);
+  border-radius: 50%;
+  animation: typing 1.5s infinite ease-in-out;
+}
+
+.typingDot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typingDot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-5px);
+  }
+}

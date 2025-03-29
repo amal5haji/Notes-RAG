@@ -1,0 +1,28 @@
+.footer {
+  background-color: white;
+  border-top: 1px solid var(--border);
+  padding: 1rem;
+  text-align: center;
+  color: var(--text-light);
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footerLinks {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.footerLink {
+  color: var(--text-light);
+  transition: color 0.2s;
+}
+
+.footerLink:hover {
+  color: var(--primary);
+}
