@@ -45,10 +45,7 @@ export default function Signup() {
         <Layout showSidebar={false}>
             <div className="auth-container">
                 <div className="auth-box">
-                    <div className="auth-header">
-                        <h1>RAGNotes</h1>
-                        <p>Create your account</p>
-                    </div>
+
                     {error && (
                         <div className="error-message">
                             {error}

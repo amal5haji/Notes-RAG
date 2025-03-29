@@ -86,7 +86,6 @@ export default function Chat() {
     return (
         <Layout>
             <div className="max-w-4xl mx-auto">
-                <h1 className="text-3xl font-bold mb-6">Chat with Your Notes</h1>
                 <div className="mb-4">
                     <ChatBox messages={messages} loading={loading} />
                 </div>

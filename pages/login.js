@@ -18,10 +18,6 @@ export default function Login() {
         <Layout showSidebar={false}>
             <div className="auth-container">
                 <div className="auth-box">
-                    <div className="auth-header">
-                        <h1>RAGNotes</h1>
-                        <p>Your personal knowledge assistant</p>
-                    </div>
                     <LoginForm />
                 </div>
             </div>

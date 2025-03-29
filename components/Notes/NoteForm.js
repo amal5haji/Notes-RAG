@@ -1,35 +1,61 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import axios from 'axios';
+import React from 'react';
 
-const NoteForm = () => {
-    const [note, setNote] = useState('');
-    const router = useRouter();
+const NoteForm = ({ 
+  title, 
+  setTitle, 
+  content, 
+  setContent, 
+  onSubmit, 
+  onCancel, 
+  isLoading,
+  submitLabel = 'Save'
+}) => {
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="form-group">
+        <label htmlFor="title" className="form-label">Title</label>
+        <input
+          type="text"
+          id="title"
+          className="form-input"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Note Title"
+          required
+        />
+      </div>
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!note) return;
+      <div className="form-group">
+        <label htmlFor="content" className="form-label">Content</label>
+        <textarea
+          id="content"
+          className="form-textarea"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Write your note here..."
+          required
+        />
+      </div>
 
-        try {
-            await axios.post('/api/notes/create', { content: note });
-            setNote('');
-            router.push('/notes');
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <textarea
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder="Write your note here..."
-                required
-            />
-            <button type="submit">Add Note</button>
-        </form>
-    );
+      <div className="flex justify-between">
+        <button 
+          type="button" 
+          className="btn btn-outline"
+          onClick={onCancel}
+          disabled={isLoading}
+        >
+          Cancel
+        </button>
+        <button 
+          type="submit" 
+          className="btn btn-primary"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Saving...' : submitLabel}
+        </button>
+      </div>
+    </form>
+  );
 };
 
 export default NoteForm;
