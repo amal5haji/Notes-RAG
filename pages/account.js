@@ -157,7 +157,7 @@ export default function Account() {
           </form>
         </div>
 
-        <div className="card-section">
+        {/* <div className="card-section">
           <h2 className="card-title">Change Password</h2>
           <form onSubmit={handlePasswordChange}>
             <div className="form-group">
@@ -204,7 +204,7 @@ export default function Account() {
               </button>
             </div>
           </form>
-        </div>
+        </div> */}
 
         <div className="card-section">
           <h2 className="card-title">Account Actions</h2>
