@@ -1,5 +1,4 @@
 module.exports = {
-  reactStrictMode: true,
   env: {
     GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
     GOOGLE_EMBEDDING_MODEL: process.env.GOOGLE_EMBEDDING_MODEL,
@@ -9,5 +8,18 @@ module.exports = {
     MILVUS_PASSWORD: process.env.MILVUS_PASSWORD,
     MONGODB_URI: process.env.MONGODB_URI,
     JWT_SECRET: process.env.JWT_SECRET,
+  },
+  reactStrictMode: false,
+
+  experimental: {
+    serverComponentsExternalPackages: [
+      "sharp",
+      "onnxruntime-node",
+      "@zilliz/milvus2-sdk-node",
+    ],
+    outputFileTracingIncludes: {
+      // When deploying to Vercel, the following configuration is required
+      "/api/**/*": ["node_modules/@zilliz/milvus2-sdk-node/dist/proto/**/*"],
+    },
   },
 };
