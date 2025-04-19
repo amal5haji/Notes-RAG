@@ -62,7 +62,7 @@ const LoginForm = () => {
                 <div className="form-group">
                     <div className="form-header">
                         <label htmlFor="password">Password</label>
-                        <Link href="/forgot-password">Forgot password?</Link>
+                        {/* <Link href="/forgot-password">Forgot password?</Link> */}
                     </div>
                     <input
                         id="password"
