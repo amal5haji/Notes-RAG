@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../../../components/Layout/Layout';
+import Toast from '../../../components/UI/Toast';
 import { clientAuth } from '../../../lib/clientAuth';
 
 export default function EditNote() {
@@ -13,6 +14,7 @@ export default function EditNote() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     if (!clientAuth.isAuthenticated()) {
@@ -77,14 +79,29 @@ export default function EditNote() {
       const data = await response.json();
 
       if (response.ok) {
-        router.push(`/notes/${id}`);
+        setToast({
+          message: 'Note updated successfully',
+          type: 'success'
+        });
+        // Wait for toast to be visible momentarily before redirecting
+        setTimeout(() => {
+          router.push(`/notes/${id}`);
+        }, 1000);
       } else {
         setError(data.message || 'Error updating note');
+        setToast({
+          message: data.message || 'Error updating note',
+          type: 'error'
+        });
         setSaving(false);
       }
     } catch (err) {
       console.error('Error updating note:', err);
       setError('An error occurred. Please try again.');
+      setToast({
+        message: 'An error occurred while updating the note',
+        type: 'error'
+      });
       setSaving(false);
     }
   };
@@ -161,6 +178,14 @@ export default function EditNote() {
               </div>
             </form>
           </div>
+        )}
+
+        {toast && (
+          <Toast 
+            message={toast.message} 
+            type={toast.type} 
+            onClose={() => setToast(null)}
+          />
         )}
       </div>
     </Layout>

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../../components/Layout/Layout';
 import NoteCard from '../../components/Notes/NoteCard';
+import Toast from '../../components/UI/Toast';
 import { clientAuth } from '../../lib/clientAuth';
 
 export default function Notes() {
@@ -12,6 +13,7 @@ export default function Notes() {
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     if (!clientAuth.isAuthenticated()) {
@@ -65,13 +67,26 @@ export default function Notes() {
       if (response.ok) {
         // Remove the deleted note from the state
         setNotes(notes.filter(note => note._id !== noteId));
+        // Show success toast
+        setToast({
+          message: 'Note deleted successfully',
+          type: 'success'
+        });
       } else {
         const data = await response.json();
         setError(data.message || 'Error deleting note');
+        setToast({
+          message: data.message || 'Error deleting note',
+          type: 'error'
+        });
       }
     } catch (err) {
       console.error('Error deleting note:', err);
       setError('An error occurred while deleting the note');
+      setToast({
+        message: 'An error occurred while deleting the note',
+        type: 'error'
+      });
     }
   };
 
@@ -137,6 +152,14 @@ export default function Notes() {
         )}
 
         {renderPagination()}
+
+        {toast && (
+          <Toast 
+            message={toast.message} 
+            type={toast.type} 
+            onClose={() => setToast(null)}
+          />
+        )}
       </div>
     </Layout>
   );

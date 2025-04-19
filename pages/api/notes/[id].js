@@ -1,6 +1,8 @@
 import dbConnect from '../../../lib/mongodb';
 import Note from '../../../models/Note';
 import { requireAuth } from '../../../lib/auth';
+import { getEmbedding } from '../../../lib/google-ai';
+import { storeEmbedding, deleteEmbedding } from '../../../lib/milvus';
 
 async function handler(req, res) {
   const { id } = req.query;
@@ -31,10 +33,22 @@ async function handler(req, res) {
         return res.status(404).json({ message: 'Note not found' });
       }
       
+      const contentChanged = content && content !== note.content;
+      
       if (title) note.title = title;
       if (content) note.content = content;
+      note.updatedAt = Date.now();
       
       await note.save();
+      
+      if (contentChanged) {
+        const embedding = await getEmbedding(note.content);
+        // Ensure consistent ID formatting
+        const userIdStr = req.user._id.toString();
+        const noteIdStr = note._id.toString();
+        await storeEmbedding(userIdStr, noteIdStr, embedding);
+        console.log(`Updated embedding for note ${noteIdStr} from user ${userIdStr}`);
+      }
       
       return res.status(200).json({ note });
     }
@@ -44,6 +58,16 @@ async function handler(req, res) {
       
       if (!note) {
         return res.status(404).json({ message: 'Note not found' });
+      }
+      
+      try {
+        // Ensure consistent ID formatting
+        const userIdStr = req.user._id.toString();
+        const noteIdStr = note._id.toString();
+        await deleteEmbedding(userIdStr, noteIdStr);
+        console.log(`Deleted embedding for note ${noteIdStr} from user ${userIdStr}`);
+      } catch (embeddingError) {
+        console.error('Error deleting embedding:', embeddingError);
       }
       
       return res.status(200).json({ message: 'Note deleted successfully' });

@@ -28,8 +28,11 @@ async function handler(req, res) {
     
     await note.save();
     
+    // Generate and store embedding with consistent ID formatting
     const embedding = await getEmbedding(content);
     await storeEmbedding(userId.toString(), note._id.toString(), embedding);
+    
+    console.log(`Created note with ID: ${note._id} for user: ${userId}`);
     
     res.status(201).json({ success: true, note });
   } catch (error) {
