@@ -1,0 +1,60 @@
+.rateLimitBanner {
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  border: 1px solid #f59e0b;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.content h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.content p {
+  margin: 0;
+  font-size: 14px;
+  color: #b45309;
+  line-height: 1.4;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .rateLimitBanner {
+    margin: 12px 0;
+    padding: 12px;
+  }
+  
+  .icon {
+    font-size: 20px;
+  }
+  
+  .content h4 {
+    font-size: 14px;
+  }
+  
+  .content p {
+    font-size: 13px;
+  }
+}

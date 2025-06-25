@@ -43,10 +43,24 @@ export default function Chat() {
             const data = await response.json();
 
             if (response.ok) {
+                let assistantContent = data.response;
+                
+                // Add helpful context for different scenarios
+                if (data.error === 'rate_limited') {
+                    assistantContent += '\n\n💡 *Tip: I need to slow down due to high usage. Please wait a moment before asking another question.*';
+                } else if (data.error === 'ai_service_unavailable') {
+                    assistantContent += '\n\n💡 *Note: AI responses are temporarily limited, but your notes are still searchable.*';
+                } else if (data.searchMethod === 'text') {
+                    assistantContent += '\n\n💡 *Note: Using text search (vector search temporarily unavailable).*';
+                }
+                
                 const assistantMessage = {
                     role: 'assistant',
-                    content: data.response,
-                    timestamp: Date.now()
+                    content: assistantContent,
+                    timestamp: Date.now(),
+                    sources: data.sources || [],
+                    searchMethod: data.searchMethod,
+                    error: data.error
                 };
                 
                 setMessages(prev => [...prev, assistantMessage]);
@@ -54,7 +68,8 @@ export default function Chat() {
                 const errorMessage = {
                     role: 'assistant',
                     content: `Error: ${data.message || 'Failed to get response'}`,
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    isError: true
                 };
                 
                 setMessages(prev => [...prev, errorMessage]);

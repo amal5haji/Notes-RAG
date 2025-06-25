@@ -7,7 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "setup": "node setup.js",
+    "diagnose": "node diagnose.js",
+    "health": "curl -s http://localhost:3000/api/health | node -e 'console.log(JSON.stringify(JSON.parse(require(\"fs\").readFileSync(0)), null, 2))'"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
