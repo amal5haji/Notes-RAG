@@ -20,19 +20,20 @@ export default async function handler(req, res) {
     status.services.mongodb = { status: 'disconnected', error: error.message };
   }
 
-  // Check Google AI service
+  // Check OpenAI service
   try {
     // Test with a simple embedding request
     await getEmbedding('test');
-    status.services.googleAI = { 
+    status.services.openai = { 
       status: 'connected', 
       error: null,
-      embeddingModel: process.env.GOOGLE_EMBEDDING_MODEL || 'text-embedding-004',
-      generativeModel: process.env.GOOGLE_GENERATIVE_MODEL || 'gemini-1.5-flash'
+      embeddingModel: process.env.OPENAI_EMBEDDING_MODEL || 'text-embedding-3-small',
+      generativeModel: process.env.OPENAI_GENERATIVE_MODEL || 'gpt-3.5-turbo',
+      baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1'
     };
   } catch (error) {
     const isRateLimit = error.status === 429 || error.message.includes('quota') || error.message.includes('rate limit');
-    status.services.googleAI = { 
+    status.services.openai = { 
       status: isRateLimit ? 'rate_limited' : 'disconnected', 
       error: error.message,
       fallbackAvailable: true
